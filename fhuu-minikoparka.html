@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FHUU CKA – Usługi Minikoparką</title>
+  <meta name="description" content="Profesjonalne usługi minikoparką – wykopy, niwelacja, instalacje, rozbiórki. Szybko, precyzyjnie, w dobrej cenie."/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --purple-deep: #1a0533;
+      --purple-mid:  #3b0f6e;
+      --purple-bright: #7c3aed;
+      --purple-glow:   #a855f7;
+      --purple-light:  #c084fc;
+      --accent:  #f0abfc;
+      --gold:    #fbbf24;
+      --white:   #faf5ff;
+      --glass:         rgba(124,58,237,0.12);
+      --glass-border:  rgba(168,85,247,0.25);
+      --text-muted:    rgba(240,171,252,0.6);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      font-family:'DM Sans',sans-serif;
+      background:var(--purple-deep);
+      color:var(--white);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* mesh */
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,58,237,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 80%, rgba(168,85,247,0.25) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(59,15,110,0.6)   0%, transparent 70%);
+      pointer-events:none;
+    }
+
+    /* grain */
+    body::after {
+      content:'';
+      position:fixed; inset:0; z-index:1;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-repeat:repeat; background-size:200px 200px;
+      opacity:0.5; pointer-events:none;
+    }
+
+    /* ---- NAVBAR ---- */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1.2rem 5%;
+      backdrop-filter:blur(20px);
+      background:rgba(26,5,51,0.7);
+      border-bottom:1px solid var(--glass-border);
+    }
+
+    .logo {
+      font-family:'Syne',sans-serif;
+      font-weight:800; font-size:1.4rem;
+      background:linear-gradient(135deg, var(--purple-light), var(--accent));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      letter-spacing:-0.02em;
+      display:flex; align-items:center; gap:.5rem;
+    }
+
+    .nav-links { display:flex; gap:2rem; list-style:none; }
+    .nav-links a {
+      color:var(--text-muted); text-decoration:none;
+      font-size:.9rem; font-weight:500; transition:color .2s;
+    }
+    .nav-links a:hover { color:var(--accent); }
+
+    .nav-cta {
+      background:linear-gradient(135deg, var(--purple-bright), var(--purple-glow));
+      color:#fff; border:none; padding:.6rem 1.4rem;
+      border-radius:50px; font-weight:600; font-size:.9rem;
+      cursor:pointer; transition:transform .2s, box-shadow .2s;
+      font-family:'DM Sans',sans-serif;
+    }
+    .nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(124,58,237,0.5); }
+
+    /* ---- HERO ---- */
+    .hero {
+      position:relative; z-index:2;
+      min-height:100vh;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      text-align:center;
+      padding:8rem 5% 4rem;
+    }
+
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:var(--glass); border:1px solid var(--glass-border);
+      border-radius:50px; padding:.4rem 1rem;
+      font-size:.8rem; font-weight:500; color:var(--purple-light);
+      margin-bottom:2rem;
+      animation:fadeSlideDown .8s ease both;
+    }
+    .hero-badge span {
+      width:6px; height:6px;
+      background:var(--purple-glow); border-radius:50%;
+      display:inline-block; animation:pulse 1.5s infinite;
+    }
+
+    @keyframes pulse        { 0%,100%{opacity:1} 50%{opacity:.3} }
+    @keyframes fadeSlideDown{ from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeSlideUp  { from{opacity:0;transform:translateY(30px)}  to{opacity:1;transform:translateY(0)} }
+
+    .hero h1 {
+      font-family:'Syne',sans-serif;
+      font-size:clamp(2.8rem,7vw,5.5rem);
+      font-weight:800; line-height:1.05;
+      letter-spacing:-0.03em;
+      animation:fadeSlideUp .9s .2s ease both;
+    }
+    .gradient-text {
+      background:linear-gradient(135deg, var(--purple-light) 0%, var(--accent) 50%, var(--gold) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+
+    .hero p {
+      max-width:580px; margin:1.8rem auto 0;
+      color:var(--text-muted); font-size:1.1rem; line-height:1.7;
+      animation:fadeSlideUp .9s .4s ease both;
+    }
+
+    .hero-btns {
+      display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+      margin-top:2.5rem;
+      animation:fadeSlideUp .9s .5s ease both;
+    }
+
+    .hero-phone {
+      margin-top:2rem;
+      animation:fadeSlideUp .9s .65s ease both;
+    }
+    .hero-phone a {
+      display:inline-flex; align-items:center; gap:.6rem;
+      color:var(--accent); text-decoration:none;
+      font-size:1.25rem; font-weight:700; font-family:'Syne',sans-serif;
+      transition:opacity .2s;
+    }
+    .hero-phone a:hover { opacity:.75; }
+    .hero-phone small { display:block; color:var(--text-muted); font-size:.75rem; margin-top:.2rem; text-align:center; letter-spacing:.08em; text-transform:uppercase; }
+
+    .btn-primary {
+      background:linear-gradient(135deg, var(--purple-bright), var(--purple-glow));
+      color:#fff; border:none; padding:.85rem 2.2rem;
+      border-radius:50px; font-weight:600; font-size:1rem;
+      cursor:pointer; transition:transform .2s, box-shadow .2s;
+      font-family:'DM Sans',sans-serif;
+    }
+    .btn-primary:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(124,58,237,0.55); }
+
+    .btn-outline {
+      background:transparent; border:1px solid var(--glass-border);
+      color:var(--white); padding:.85rem 2.2rem;
+      border-radius:50px; font-weight:500; font-size:1rem;
+      cursor:pointer; transition:border-color .2s, background .2s;
+      font-family:'DM Sans',sans-serif;
+    }
+    .btn-outline:hover { border-color:var(--purple-glow); background:var(--glass); }
+
+    /* ---- STATS ---- */
+    .stats-bar {
+      position:relative; z-index:2;
+      display:flex; justify-content:center; gap:3rem; flex-wrap:wrap;
+      padding:2rem 5%;
+      border-top:1px solid var(--glass-border);
+      border-bottom:1px solid var(--glass-border);
+      background:rgba(26,5,51,0.4);
+      backdrop-filter:blur(10px);
+    }
+    .stat { text-align:center; }
+    .stat-val {
+      font-family:'Syne',sans-serif; font-size:2rem; font-weight:800;
+      background:linear-gradient(135deg, var(--purple-light), var(--accent));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .stat-label { font-size:.8rem; color:var(--text-muted); margin-top:.2rem; text-transform:uppercase; letter-spacing:.1em; }
+
+    /* ---- SECTION COMMON ---- */
+    section { position:relative; z-index:2; padding:6rem 5%; }
+    .section-tag {
+      display:inline-block; font-size:.75rem; font-weight:600;
+      text-transform:uppercase; letter-spacing:.15em; color:var(--purple-light);
+      margin-bottom:1rem;
+    }
+    .section-title {
+      font-family:'Syne',sans-serif;
+      font-size:clamp(2rem,4vw,3rem);
+      font-weight:800; letter-spacing:-0.02em; line-height:1.1;
+    }
+
+    /* ---- SERVICES GRID ---- */
+    .services-header { text-align:center; margin-bottom:4rem; }
+
+    .services-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+      gap:1.5rem; max-width:1100px; margin:0 auto;
+    }
+
+    .service-card {
+      position:relative;
+      background:linear-gradient(145deg, rgba(59,15,110,0.55), rgba(26,5,51,0.8));
+      border:1px solid var(--glass-border);
+      border-radius:20px; padding:2rem;
+      backdrop-filter:blur(12px);
+      transition:transform .3s, box-shadow .3s, border-color .3s;
+      overflow:hidden;
+    }
+    .service-card::before {
+      content:'';
+      position:absolute; top:-60px; right:-60px;
+      width:160px; height:160px; border-radius:50%;
+      background:radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .service-card:hover {
+      transform:translateY(-6px);
+      box-shadow:0 20px 60px rgba(124,58,237,0.3);
+      border-color:var(--purple-glow);
+    }
+
+    .badge-hot {
+      position:absolute; top:1.2rem; right:1.2rem;
+      background:linear-gradient(135deg, var(--gold), #f97316);
+      color:#1a0533; font-size:.7rem; font-weight:800;
+      padding:.25rem .75rem; border-radius:50px;
+      letter-spacing:.05em; text-transform:uppercase;
+    }
+
+    .service-icon {
+      font-size:2.8rem; margin-bottom:1.2rem;
+      display:inline-flex; align-items:center; justify-content:center;
+      width:64px; height:64px; border-radius:16px;
+      background:var(--glass); border:1px solid var(--glass-border);
+    }
+
+    .service-card h3 {
+      font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:800;
+      margin-bottom:.6rem; color:var(--white);
+    }
+    .service-card p {
+      color:var(--text-muted); font-size:.9rem; line-height:1.6;
+      margin-bottom:1.4rem;
+    }
+
+    .service-features {
+      list-style:none; margin-bottom:1.5rem;
+      display:flex; flex-direction:column; gap:.4rem;
+    }
+    .service-features li {
+      font-size:.82rem; color:var(--purple-light);
+      display:flex; align-items:center; gap:.5rem;
+    }
+    .service-features li::before {
+      content:'✓'; color:var(--gold); font-weight:700; font-size:.8rem;
+    }
+
+    .service-cta {
+      display:block; width:100%; padding:.8rem;
+      border-radius:50px; font-weight:700; font-size:.95rem;
+      font-family:'DM Sans',sans-serif; cursor:pointer;
+      border:none; text-align:center; text-decoration:none;
+      transition:transform .2s, box-shadow .2s;
+    }
+    .cta-main {
+      background:linear-gradient(135deg, var(--purple-bright), var(--purple-glow));
+      color:#fff;
+    }
+    .cta-main:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(124,58,237,0.5); }
+    .cta-outline {
+      background:transparent; color:var(--purple-light);
+      border:1px solid var(--glass-border) !important;
+    }
+    .cta-outline:hover { background:var(--glass); border-color:var(--purple-glow) !important; }
+
+    /* ---- FEATURES ---- */
+    .features-wrap {
+      max-width:1100px; margin:0 auto;
+    }
+    .features-top {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:4rem; align-items:center; margin-bottom:4rem;
+    }
+    .features-desc { color:var(--text-muted); font-size:1rem; line-height:1.75; margin-top:1rem; }
+
+    .features-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:1.2rem;
+    }
+    .feature-card {
+      background:var(--glass); border:1px solid var(--glass-border);
+      border-radius:16px; padding:1.5rem;
+      transition:transform .3s, border-color .3s;
+    }
+    .feature-card:hover { transform:translateY(-4px); border-color:var(--purple-glow); }
+    .feature-icon { font-size:1.8rem; margin-bottom:.8rem; }
+    .feature-card h4 { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:.4rem; }
+    .feature-card p  { font-size:.85rem; color:var(--text-muted); line-height:1.55; }
+
+    /* ---- OBSZAR DZIAŁANIA ---- */
+    .area-section {
+      background:rgba(59,15,110,0.2);
+      border-top:1px solid var(--glass-border);
+      border-bottom:1px solid var(--glass-border);
+    }
+    .area-inner {
+      max-width:1100px; margin:0 auto;
+      display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;
+    }
+    .area-map {
+      background:linear-gradient(145deg,rgba(59,15,110,0.5),rgba(26,5,51,0.8));
+      border:1px solid var(--glass-border); border-radius:20px;
+      padding:2.5rem; text-align:center;
+    }
+    .map-placeholder {
+      width:100%; aspect-ratio:4/3; border-radius:12px;
+      background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(168,85,247,0.1));
+      border:1px dashed var(--glass-border);
+      display:flex; align-items:center; justify-content:center;
+      flex-direction:column; gap:1rem;
+      color:var(--text-muted); font-size:.9rem;
+    }
+    .map-pin { font-size:3rem; }
+    .area-list { list-style:none; display:flex; flex-direction:column; gap:.8rem; margin-top:1.5rem; }
+    .area-list li {
+      display:flex; align-items:center; gap:.7rem;
+      font-size:.95rem; color:var(--purple-light);
+    }
+    .area-list li::before { content:'📍'; font-size:.8rem; }
+
+    /* ---- TESTIMONIALS ---- */
+    .testimonials-section {
+      background:linear-gradient(135deg,rgba(59,15,110,0.4),rgba(26,5,51,0.6));
+      border:1px solid var(--glass-border); border-radius:24px;
+      padding:4rem; max-width:1100px; margin:0 auto;
+    }
+    .testimonials-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:1.5rem; margin-top:3rem;
+    }
+    .testimonial {
+      background:var(--glass); border:1px solid var(--glass-border);
+      border-radius:16px; padding:1.8rem;
+      transition:transform .3s;
+    }
+    .testimonial:hover { transform:translateY(-4px); }
+    .stars { color:var(--gold); font-size:1rem; letter-spacing:.15em; margin-bottom:.8rem; }
+    .testimonial p { font-size:.9rem; color:var(--text-muted); line-height:1.65; font-style:italic; margin-bottom:1rem; }
+    .author { font-size:.82rem; font-weight:600; color:var(--purple-light); }
+
+    /* ---- CTA BANNER ---- */
+    .cta-banner {
+      background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(168,85,247,0.2));
+      border:1px solid var(--glass-border); border-radius:24px;
+      padding:4rem; max-width:1100px; margin:0 auto;
+      text-align:center; backdrop-filter:blur(10px);
+    }
+    .cta-banner h2 { font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; margin-bottom:1rem; }
+    .cta-banner p  { color:var(--text-muted); font-size:1.05rem; margin-bottom:2.5rem; }
+
+    .cta-phone-big {
+      display:inline-flex; align-items:center; gap:.8rem;
+      font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800;
+      color:var(--accent); text-decoration:none; margin-bottom:2rem;
+      transition:opacity .2s;
+    }
+    .cta-phone-big:hover { opacity:.75; }
+
+    /* ---- FOOTER ---- */
+    footer {
+      position:relative; z-index:2;
+      border-top:1px solid var(--glass-border);
+      padding:3rem 5%;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;
+    }
+    footer .logo { font-size:1.2rem; }
+    footer p { color:var(--text-muted); font-size:.85rem; }
+    .footer-links { display:flex; gap:1.5rem; list-style:none; }
+    .footer-links a { color:var(--text-muted); text-decoration:none; font-size:.85rem; transition:color .2s; }
+    .footer-links a:hover { color:var(--accent); }
+
+    /* ---- REVEAL ---- */
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ---- RESPONSIVE ---- */
+    @media(max-width:900px) {
+      .features-top { grid-template-columns:1fr; gap:2rem; }
+      .area-inner   { grid-template-columns:1fr; gap:2rem; }
+    }
+    @media(max-width:768px) {
+      .nav-links { display:none; }
+      .stats-bar { gap:1.5rem; }
+      .testimonials-section,
+      .cta-banner { padding:2.5rem 1.5rem; margin:0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#lg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <defs>
+        <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#c084fc"/>
+          <stop offset="100%" stop-color="#f0abfc"/>
+        </linearGradient>
+      </defs>
+      <path d="M12 22V12M12 12L5 7M12 12L19 7M5 7V17L12 22L19 17V7L12 2L5 7Z"/>
+    </svg>
+    FHUU CKA
+  </div>
+  <ul class="nav-links">
+    <li><a href="#uslugi">Usługi</a></li>
+    <li><a href="#zalety">Zalety</a></li>
+    <li><a href="#obszar">Obszar</a></li>
+    <li><a href="#opinie">Opinie</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Zadzwoń teraz</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><span></span> Profesjonalne usługi minikoparką</div>
+  <h1>Precyzja i Moc<br/><span class="gradient-text">Minikoparki</span></h1>
+  <p>Wykopy, niwelacja terenu, instalacje i rozbiórki — szybko, czysto i w dobrej cenie. Działamy lokalnie, reagujemy błyskawicznie.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('uslugi').scrollIntoView({behavior:'smooth'})">Zobacz usługi</button>
+    <button class="btn-outline" onclick="document.getElementById('zalety').scrollIntoView({behavior:'smooth'})">Dlaczego my?</button>
+  </div>
+  <div class="hero-phone">
+    <a href="tel:+48000000000">📞 +48 000 000 000</a>
+    <small>Dostępni pon–sob · 7:00–18:00</small>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-val">200+</div><div class="stat-label">Zrealizowanych zleceń</div></div>
+  <div class="stat"><div class="stat-val">8 lat</div><div class="stat-label">Doświadczenia</div></div>
+  <div class="stat"><div class="stat-val">100%</div><div class="stat-label">Zadowolonych klientów</div></div>
+  <div class="stat"><div class="stat-val">48h</div><div class="stat-label">Czas reakcji</div></div>
+</div>
+
+<!-- USŁUGI -->
+<section id="uslugi">
+  <div class="services-header reveal">
+    <span class="section-tag">Nasza oferta</span>
+    <h2 class="section-title">Usługi <span class="gradient-text">Minikoparką</span></h2>
+    <p style="color:var(--text-muted);margin-top:1rem;font-size:1rem;max-width:520px;margin-left:auto;margin-right:auto;">
+      Dysponujemy nowoczesnym sprzętem i doświadczoną obsługą. Każde zlecenie wyceniamy indywidualnie i bezpłatnie.
+    </p>
+  </div>
+
+  <div class="services-grid">
+
+    <!-- WYKOPY -->
+    <div class="service-card reveal">
+      <div class="badge-hot">🔥 Popularna</div>
+      <div class="service-icon">⛏️</div>
+      <h3>Wykopy i Kopanie</h3>
+      <p>Precyzyjne wykopy fundamentowe, liniowe i punktowe. Praca w trudno dostępnych miejscach, gdzie ciężki sprzęt nie dotrze.</p>
+      <ul class="service-features">
+        <li>Wykopy fundamentów i piwnic</li>
+        <li>Rowy instalacyjne (woda, prąd, gaz)</li>
+        <li>Wykopy pod szambo i zbiorniki</li>
+        <li>Praca w ogrodach i wąskich przejściach</li>
+      </ul>
+      <a href="tel:+48000000000" class="service-cta cta-main">📞 Wycena bezpłatna</a>
+    </div>
+
+    <!-- NIWELACJA -->
+    <div class="service-card reveal">
+      <div class="service-icon">🏗️</div>
+      <h3>Niwelacja Terenu</h3>
+      <p>Wyrównanie i niwelacja działek budowlanych, ogrodów i placów. Profesjonalne planowanie terenu pod inwestycje.</p>
+      <ul class="service-features">
+        <li>Wyrównanie działek i ogrodów</li>
+        <li>Plantowanie pod trawniki i nawierzchnie</li>
+        <li>Usuwanie nierówności i pagórków</li>
+        <li>Przygotowanie terenu pod budowę</li>
+      </ul>
+      <a href="tel:+48000000000" class="service-cta cta-main">📞 Wycena bezpłatna</a>
+    </div>
+
+    <!-- ROZBIÓRKI -->
+    <div class="service-card reveal">
+      <div class="service-icon">🧱</div>
+      <h3>Rozbiórki i Burzenie</h3>
+      <p>Rozbiórka starych fundamentów, posadzek betonowych, chodników oraz niewielkich budowli. Szybko i z wywozem gruzu.</p>
+      <ul class="service-features">
+        <li>Burzenie fundamentów i posadzek</li>
+        <li>Rozbiórka ogrodzeń i murów</li>
+        <li>Kruszenie betonu i asfaltu</li>
+        <li>Wywóz i utylizacja gruzu</li>
+      </ul>
+      <a href="tel:+48000000000" class="service-cta cta-main">📞 Wycena bezpłatna</a>
+    </div>
+
+    <!-- INSTALACJE -->
+    <div class="service-card reveal">
+      <div class="service-icon">🔧</div>
+      <h3>Instalacje Zewnętrzne</h3>
+      <p>Kopanie rowów pod wszelkie instalacje – wodociągi, kanalizację, przyłącza gazowe i elektryczne. Praca zgodna z normami.</p>
+      <ul class="service-features">
+        <li>Przyłącza wodne i kanalizacyjne</li>
+        <li>Rowy pod kable energetyczne</li>
+        <li>Instalacje drenarskie i odwodnienia</li>
+        <li>Montaż przepustów i rur</li>
+      </ul>
+      <a href="tel:+48000000000" class="service-cta cta-main">📞 Wycena bezpłatna</a>
+    </div>
+
+    <!-- TRANSPORT -->
+    <div class="service-card reveal">
+      <div class="service-icon">🚛</div>
+      <h3>Transport i Wywóz</h3>
+      <p>Wywóz ziemi, gruzu i odpadów budowlanych. Dowóz kruszywa, piasku i żwiru na teren inwestycji. Szybka realizacja.</p>
+      <ul class="service-features">
+        <li>Wywóz ziemi i gruzu</li>
+        <li>Dostawa kruszywa i piasku</li>
+        <li>Utylizacja odpadów budowlanych</li>
+        <li>Transport materiałów sypkich</li>
+      </ul>
+      <a href="tel:+48000000000" class="service-cta cta-main">📞 Wycena bezpłatna</a>
+    </div>
+
+    <!-- DODATKOWE -->
+    <div class="service-card reveal">
+      <div class="badge-hot" style="background:linear-gradient(135deg,var(--purple-light),var(--accent));color:#1a0533;">✨ Nowe</div>
+      <div class="service-icon">🌿</div>
+      <h3>Prace Ogrodowe</h3>
+      <p>Karczowanie krzewów i korzeni, usuwanie pniaków, kopanie stawów i oczek wodnych. Sprzęt sprawdzi się w każdym ogrodzie.</p>
+      <ul class="service-features">
+        <li>Usuwanie pniaków i korzeni</li>
+        <li>Kopanie stawów i oczek wodnych</li>
+        <li>Karczowanie terenu pod ogród</li>
+        <li>Zbieranie i wywóz biomasy</li>
+      </ul>
+      <a href="tel:+48000000000" class="service-cta cta-main">📞 Wycena bezpłatna</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ZALETY -->
+<section id="zalety">
+  <div class="features-wrap reveal">
+    <div class="features-top">
+      <div>
+        <span class="section-tag">Dlaczego my?</span>
+        <h2 class="section-title">Profesjonalizm<br/><span class="gradient-text">w każdym detalu</span></h2>
+        <p class="features-desc">Pracujemy szybko i rzetelnie. Nasz sprzęt jest regularnie serwisowany, a ekipa – doświadczona i ubezpieczona. Wyceniamy bezpłatnie i przyjeżdżamy na czas.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h4>Szybka realizacja</h4>
+          <p>Większość zleceń realizujemy w ciągu 24–48 godzin od kontaktu.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h4>Uczciwa cena</h4>
+          <p>Bezpłatna wycena i transparentny cennik. Żadnych ukrytych kosztów.</p>
+        </div>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h4>Ubezpieczony sprzęt</h4>
+        <p>Pracujemy z pełnym ubezpieczeniem OC. Twoja nieruchomość jest bezpieczna.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📏</div>
+        <h4>Precyzja działania</h4>
+        <p>Minikoparka sprawdzi się tam, gdzie duży sprzęt nie wejdzie – wąskie działki, ogrody, podjazdy.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤝</div>
+        <h4>Indywidualne podejście</h4>
+        <p>Każde zlecenie traktujemy z pełnym zaangażowaniem. Słuchamy i doradzamy.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h4>Lokalny wykonawca</h4>
+        <p>Działamy lokalnie – znamy teren, jesteśmy dostępni i zawsze na czas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OBSZAR DZIAŁANIA -->
+<section id="obszar" class="area-section">
+  <div class="area-inner reveal">
+    <div>
+      <span class="section-tag">Zasięg usług</span>
+      <h2 class="section-title">Obszar<br/><span class="gradient-text">Działania</span></h2>
+      <p style="color:var(--text-muted);margin:1rem 0 1.5rem;font-size:1rem;line-height:1.7;">
+        Obsługujemy zlecenia w promieniu do 50 km. Dojazd na miejscu wyceniamy indywidualnie – często jest bezpłatny w pobliskiej okolicy.
+      </p>
+      <ul class="area-list">
+        <li>Miasto i okolice (do 15 km) — dojazd gratis</li>
+        <li>Powiat (do 30 km) — dojazd od 50 zł</li>
+        <li>Region (do 50 km) — wycena indywidualna</li>
+        <li>Większy dystans — zapytaj o ofertę</li>
+      </ul>
+      <div style="margin-top:2rem;">
+        <a href="tel:+48000000000" class="btn-primary">📞 Sprawdź dostępność w Twoim rejonie</a>
+      </div>
+    </div>
+    <div class="area-map">
+      <div class="map-placeholder">
+        <div class="map-pin">🗺️</div>
+        <div>
+          <strong style="color:var(--purple-light);font-family:'Syne',sans-serif;">Zasięg do 50 km</strong><br/>
+          <span style="font-size:.8rem;">Zadzwoń, aby potwierdzić dostępność<br/>w Twojej lokalizacji</span>
+        </div>
+      </div>
+      <p style="color:var(--text-muted);font-size:.8rem;margin-top:1rem;">
+        📞 +48 000 000 000 &nbsp;|&nbsp; Pon–Sob 7:00–18:00
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- OPINIE -->
+<section id="opinie" style="padding:5rem 5%;">
+  <div class="testimonials-section reveal">
+    <div style="text-align:center;">
+      <span class="section-tag">Opinie klientów</span>
+      <h2 class="section-title">Co mówią<br/><span class="gradient-text">nasi klienci?</span></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"Zlecenie wykopów pod instalację wodno-kanalizacyjną. Ekipa przyjechała punktualnie, praca wykonana szybko i schludnie. Polecam z czystym sumieniem!"</p>
+        <div class="author">— Krzysztof M., właściciel posesji</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"Niwelacja działki pod budowę domu. Cena uczciwa, pan bardzo pomocny i dokładny. Teren wyglądał idealnie – budowlańcy byli zachwyceni."</p>
+        <div class="author">— Marta i Tomasz W., inwestorzy</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>"Usunięcie starego fundamentu po garażu. Szybko, sprawnie i bez zniszczeń wokół. Dodatkowy plus za wywóz gruzu i posprzątanie terenu."</p>
+        <div class="author">— Andrzej P., Wrocław</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA KONTAKT -->
+<section style="padding:2rem 5% 5rem;">
+  <div class="cta-banner reveal" id="kontakt">
+    <h2>Gotowy do działania?<br/><span class="gradient-text">Zadzwoń i umów termin!</span></h2>
+    <p>Bezpłatna wycena na miejscu, szybki termin realizacji. Czekamy na Twój telefon.</p>
+    <div style="margin-bottom:1.5rem;">
+      <a href="tel:+48000000000" class="cta-phone-big">📞 +48 000 000 000</a>
+    </div>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:2rem;">Dostępni: Poniedziałek – Sobota, 7:00 – 18:00</p>
+    <button class="btn-primary" style="font-size:1.05rem;padding:1rem 2.8rem;"
+            onclick="document.getElementById('uslugi').scrollIntoView({behavior:'smooth'})">
+      Sprawdź nasze usługi →
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#lg2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <defs>
+        <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#c084fc"/>
+          <stop offset="100%" stop-color="#f0abfc"/>
+        </linearGradient>
+      </defs>
+      <path d="M12 22V12M12 12L5 7M12 12L19 7M5 7V17L12 22L19 17V7L12 2L5 7Z"/>
+    </svg>
+    FHUU CKA
+  </div>
+  <p>© 2025 FHUU CKA Usługi Minikoparką. Wszelkie prawa zastrzeżone.</p>
+  <ul class="footer-links">
+    <li><a href="#">Regulamin</a></li>
+    <li><a href="#">Polityka prywatności</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Staggered service cards
+  document.querySelectorAll('.service-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+</script>
+</body>
+</html>
